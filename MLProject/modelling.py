@@ -1,3 +1,4 @@
+Import os
 import pandas as pd
 import numpy as np
 import mlflow
@@ -9,7 +10,7 @@ from sklearn.metrics import (accuracy_score, precision_score,
 import warnings
 warnings.filterwarnings('ignore')
 
-mlflow.set_tracking_uri("http://127.0.0.1:5000/")
+mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000/"))
 mlflow.set_experiment("Diabetes-Prediction-Basic")
 
 print("Loading dataset...")
