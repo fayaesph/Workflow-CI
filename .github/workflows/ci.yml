@@ -84,7 +84,12 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Tag Docker Image
-        run: docker tag fayaesph/diabetes-prediction fayaesph/diabetes-prediction:latest
+        run: |
+          docker images
+          docker tag fayaesph/diabetes-prediction:latest fayaesph/diabetes-prediction:latest || \
+          docker tag diabetes-prediction:latest fayaesph/diabetes-prediction:latest || \
+          echo "Trying to find built image..."
+          docker images | grep diabetes
 
       - name: Push Docker Image
         run: docker push fayaesph/diabetes-prediction:latest
