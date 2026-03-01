@@ -45,6 +45,9 @@ jobs:
           import mlflow
           client = mlflow.tracking.MlflowClient()
           experiment = client.get_experiment_by_name('Diabetes-Prediction-Basic')
+          if experiment is None:
+              experiments = client.search_experiments()
+              experiment = experiments[0]
           runs = client.search_runs(experiment.experiment_id, order_by=['start_time DESC'], max_results=1)
           print(runs[0].info.run_id)
           ")
