@@ -56,10 +56,26 @@ jobs:
           MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
         run: |
-          mlflow models build-docker \
-            -m "runs:/${{ env.RUN_ID }}/model" \
-            -n "fayaesph/diabetes-prediction" \
-            --enable-mlserver
+          python -c "
+          import mlflow
+          import os
+          client = mlflow.tracking.MlflowClient()
+          runs = client.search_runs(
+              experiment_ids=['0'],
+              order_by=['start_time DESC'],
+              max_results=1
+          )
+          run_id = runs[0].info.run_id
+          print(f'Building docker for run: {run_id}')
+          import subprocess
+          result = subprocess.run([
+              'mlflow', 'models', 'build-docker',
+              '-m', f'runs:/{run_id}/model',
+              '-n', 'fayaesph/diabetes-prediction'
+          ], capture_output=True, text=True)
+          print(result.stdout)
+          print(result.stderr)
+          "
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
