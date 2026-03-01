@@ -26,27 +26,24 @@ print(f"Training set: {X_train.shape}")
 print(f"Testing set: {X_test.shape}")
 print("\nMemulai training...")
 
-# Aktifkan autolog
-mlflow.sklearn.autolog()
-
-# Inisialisasi dan training model
-model = RandomForestClassifier(
-    n_estimators=100,
-    random_state=42,
-    n_jobs=-1
-)
+model = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
 model.fit(X_train, y_train)
-
-# Prediksi
 y_pred = model.predict(X_test)
 
-# Tampilkan hasil
 print(f"\nTraining selesai!")
 print(f"Accuracy  : {accuracy_score(y_test, y_pred):.4f}")
 print(f"Precision : {precision_score(y_test, y_pred):.4f}")
 print(f"Recall    : {recall_score(y_test, y_pred):.4f}")
 print(f"F1-Score  : {f1_score(y_test, y_pred):.4f}")
-print(f"\nClassification Report:")
 print(classification_report(y_test, y_pred))
 
-print("\nArtefak tersimpan di MLflow Tracking UI!")
+# Manual logging
+with mlflow.start_run():
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_param("random_state", 42)
+    mlflow.log_metric("accuracy", accuracy_score(y_test, y_pred))
+    mlflow.log_metric("precision", precision_score(y_test, y_pred))
+    mlflow.log_metric("recall", recall_score(y_test, y_pred))
+    mlflow.log_metric("f1_score", f1_score(y_test, y_pred))
+    mlflow.sklearn.log_model(model, "model")
+    print("Model tersimpan di MLflow!")
