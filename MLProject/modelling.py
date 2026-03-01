@@ -27,7 +27,7 @@ print(f"Testing set: {X_test.shape}")
 
 print("\nMemulai training...")
 
-with mlflow.start_run(run_name="RandomForest-Basic"):
+with mlflow.start_run(run_name="RandomForest-Basic", nested=True):
 
     # Aktifkan autolog
     mlflow.sklearn.autolog()
