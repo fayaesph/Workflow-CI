@@ -53,16 +53,15 @@ jobs:
         run: |
           cd MLProject
           MLFLOW_TRACKING_URI=mlruns python modelling.py
-          ls -la
-          ls -la mlruns/ || echo "no mlruns"
-          ls -la mlartifacts/ || echo "no mlartifacts"
 
-      - name: Upload to Google Drive
+      - name: Upload to GitHub LFS
         run: |
+          git lfs install
+          git lfs track "*.pkl"
+          git add .gitattributes
           git config --global user.email "fayaesph@gmail.com"
           git config --global user.name "fayaesph"
-          git add -f MLProject/mlruns/ || echo "no mlruns"
-          git add -f MLProject/mlartifacts/ || echo "no mlartifacts"
+          git add -f MLProject/mlruns/
           git status
           git commit -m "Add MLflow artifacts from CI run ${{ env.RUN_ID }}" || echo "Nothing to commit"
           git push origin main
