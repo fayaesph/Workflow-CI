@@ -42,6 +42,9 @@ jobs:
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
           echo "Captured RUN_ID: $RUN_ID"
+          ls -la
+          ls -la mlruns/ || echo "no mlruns"
+          ls -la mlartifacts/ || echo "no mlartifacts"
 
       - name: Get latest MLflow run_id
         run: echo "Run ID is ${{ env.RUN_ID }}"
@@ -53,8 +56,13 @@ jobs:
         run: |
           git config --global user.email "fayaesph@gmail.com"
           git config --global user.name "fayaesph"
-          git add MLProject/
-          git commit -m "Add MLflow artifacts from CI run" || echo "Nothing to commit"
+          ls -la MLProject/
+          ls -la MLProject/mlruns/ || echo "no mlruns in MLProject"
+          ls -la MLProject/mlartifacts/ || echo "no mlartifacts in MLProject"
+          git add -f MLProject/mlruns/ || echo "no mlruns to add"
+          git add -f MLProject/mlartifacts/ || echo "no mlartifacts to add"
+          git status
+          git commit -m "Add MLflow artifacts from CI run ${{ env.RUN_ID }}" || echo "Nothing to commit"
           git push origin main
 
       - name: Build Docker Model
