@@ -52,7 +52,6 @@ jobs:
           git commit -m "Add MLflow artifacts from CI run" || echo "Nothing to commit"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fayaesph/Workflow-CI.git HEAD:main
 
-
       - name: Build Docker Model
         env:
           MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
