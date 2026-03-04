@@ -1,0 +1,15 @@
+artifact_uri: /home/runner/work/Workflow-CI/Workflow-CI/MLProject/mlruns/273019934516486853/0af513d4d2534ac98e00b8e467fc009a/artifacts
+end_time: 1772597303656
+entry_point_name: ''
+experiment_id: '273019934516486853'
+lifecycle_stage: active
+run_id: 0af513d4d2534ac98e00b8e467fc009a
+run_name: capable-wasp-606
+run_uuid: 0af513d4d2534ac98e00b8e467fc009a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1772597299386
+status: 3
+tags: []
+user_id: runner
