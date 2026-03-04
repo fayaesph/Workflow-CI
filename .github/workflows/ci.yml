@@ -45,10 +45,13 @@ jobs:
         run: pip install mlflow==2.19.0
 
       - name: Upload to GitHub
-        uses: actions/upload-artifact@v4
-        with:
-          name: mlflow-artifacts
-          path: MLProject/
+        run: |
+          git config --global user.email "fayaesph@gmail.com"
+          git config --global user.name "fayaesph"
+          git add MLProject/
+          git commit -m "Add MLflow artifacts from CI run" || echo "Nothing to commit"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fayaesph/Workflow-CI.git HEAD:main
+
 
       - name: Build Docker Model
         env:
