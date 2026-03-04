@@ -53,6 +53,11 @@ jobs:
         run: |
           cd MLProject
           MLFLOW_TRACKING_URI=mlruns python modelling.py
+          echo "=== MLruns structure ==="
+          find mlruns -name "model.pkl" | head -5
+          MODEL_PATH=$(find mlruns -name "MLmodel" | head -1 | xargs dirname)
+          echo "MODEL_PATH=$MODEL_PATH" >> $GITHUB_ENV
+          echo "Found model at: $MODEL_PATH"
 
       - name: Upload to GitHub LFS
         run: |
@@ -72,18 +77,10 @@ jobs:
           MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
         run: |
-          RUN_ID=$(cat MLProject/mlruns/*/meta.yaml | grep -o 'run_id: .*' | head -1 | awk '{print $2}' || echo "")
-          if [ -z "$RUN_ID" ]; then
-            RUN_ID=$(ls MLProject/mlruns/*/  | grep -v meta | head -1)
-          fi
-          EXPERIMENT_ID=$(ls MLProject/mlruns/ | grep -v '0' | head -1)
-          RUN_ID=$(ls MLProject/mlruns/$EXPERIMENT_ID/ | grep -v meta | head -1)
-          echo "Using RUN_ID: $RUN_ID"
-          echo "Using EXPERIMENT_ID: $EXPERIMENT_ID"
+          echo "Building Docker from: MLProject/${{ env.MODEL_PATH }}"
           mlflow models build-docker \
-            -m "MLProject/mlruns/$EXPERIMENT_ID/$RUN_ID/artifacts/model" \
-            -n "fayaesph/diabetes-prediction" \
-            --enable-mlserver
+            -m "MLProject/${{ env.MODEL_PATH }}" \
+            -n "fayaesph/diabetes-prediction"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
