@@ -1,0 +1,15 @@
+artifact_uri: /home/runner/work/Workflow-CI/Workflow-CI/MLProject/mlruns/273019934516486853/cf3a27f7e7e94dc58b40ff65a8fcdf06/artifacts
+end_time: 1772593577680
+entry_point_name: ''
+experiment_id: '273019934516486853'
+lifecycle_stage: active
+run_id: cf3a27f7e7e94dc58b40ff65a8fcdf06
+run_name: resilient-shrike-602
+run_uuid: cf3a27f7e7e94dc58b40ff65a8fcdf06
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1772593573584
+status: 3
+tags: []
+user_id: runner
